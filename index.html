@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suvo Apks</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
+body{background:radial-gradient(circle at top,#0f172a,#020617);color:#fff;min-height:100vh}
+
+/* HEADER */
+.header{padding:25px;text-align:center}
+.header h1{font-size:32px;background:linear-gradient(90deg,#22d3ee,#6366f1);-webkit-background-clip:text;color:transparent}
+.header p{opacity:.7;font-size:14px}
+
+/* SEARCH */
+.search{width:90%;margin:15px auto;display:block;padding:14px;border-radius:30px;border:none;outline:none;background:rgba(255,255,255,.08);color:#fff}
+
+/* APPS GRID */
+.apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px;padding:15px}
+
+/* CARD */
+.card{background:rgba(255,255,255,.08);backdrop-filter:blur(15px);border-radius:18px;padding:12px;transition:.3s}
+.card:hover{transform:translateY(-6px) scale(1.03)}
+.card img{width:100%;border-radius:14px}
+.card h3{font-size:15px;margin-top:8px}
+.card p{font-size:12px;opacity:.7}
+
+/* BUTTON */
+.btn{width:100%;margin-top:10px;padding:10px;border:none;border-radius:12px;background:linear-gradient(90deg,#6366f1,#22d3ee);color:#fff;font-weight:600;cursor:pointer}
+
+/* POPUP */
+.popup{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center}
+.popup-box{width:90%;max-width:350px;background:rgba(255,255,255,.1);backdrop-filter:blur(20px);border-radius:20px;padding:20px;text-align:center}
+.popup-box h2{margin-bottom:8px}
+.popup-box a{display:block;padding:12px;margin:10px 0;border-radius:14px;background:rgba(255,255,255,.15);color:#fff;text-decoration:none;font-weight:500}
+.unlock{margin-top:15px;padding:12px;width:100%;border:none;border-radius:14px;background:linear-gradient(90deg,#22d3ee,#6366f1);color:#fff;font-weight:700;cursor:pointer}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1>Suvo Apks</h1>
+  <p>Download Premium Mod APKs</p>
+</div>
+
+<input class="search" placeholder="Search premium APKs...">
+
+<div class="apps" id="apps"></div>
+
+<!-- UNLOCK POPUP -->
+<div class="popup" id="popup">
+  <div class="popup-box">
+    <h2>Unlock Apk Download</h2>
+    <p style="opacity:.7;font-size:13px">Follow to unlock</p>
+
+    <a href="https://t.me/Suvoooooooo" target="_blank">Join Telegram</a>
+    <a href="https://chat.whatsapp.com/HUpH4Zt4TW68LSRuhVEt6y" target="_blank">Join WhatsApp</a>
+    <a href="https://www.instagram.com/gaming_link_8138" target="_blank">Follow Instagram</a>
+
+    <button class="unlock" onclick="finalDownload()">UNLOCK DOWNLOAD</button>
+  </div>
+</div>
+
+<script>
+// 🔹 Replace below URL with your actual Google Sheet OpenSheet JSON link
+const sheetURL = "https://opensheet.elk.sh/1-3rVtq3y9GU2BhqMfspQo8WVBoKnkUKaYgGqfBCeOGE/Sheet1";
+
+let finalLink = "";
+
+fetch(sheetURL)
+.then(res => res.json())
+.then(data => {
+  const appsContainer = document.getElementById("apps");
+  data.forEach(app => {
+    appsContainer.innerHTML += `
+    <div class="card">
+      <img src="${app.icon}">
+      <h3>${app.name}</h3>
+      <p>${app.size} • ${app.type}</p>
+      <button class="btn" onclick="openPopup('${app.download}')">View Details</button>
+    </div>`;
+  });
+});
+
+// 🔹 SEARCH FUNCTION
+document.querySelector(".search").addEventListener("input", function(e){
+  const value = e.target.value.toLowerCase();
+  const filtered = [];
+  fetch(sheetURL)
+    .then(r => r.json())
+    .then(data => {
+      const filtered = data.filter(a => a.name.toLowerCase().includes(value));
+      const appsContainer = document.getElementById("apps");
+      appsContainer.innerHTML = "";
+      filtered.forEach(app => {
+        appsContainer.innerHTML += `
+        <div class="card">
+          <img src="${app.icon}">
+          <h3>${app.name}</h3>
+          <p>${app.size} • ${app.type}</p>
+          <button class="btn" onclick="openPopup('${app.download}')">View Details</button>
+        </div>`;
+      });
+    });
+});
+
+function openPopup(link){
+  finalLink = link;
+  document.getElementById("popup").style.display = "flex";
+}
+
+function finalDownload(){
+  window.location.href = finalLink;
+}
+</script>
+
+</body>
+</html>
